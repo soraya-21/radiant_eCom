@@ -1,0 +1,59 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: radiant_db
+    networks:
+      - radiant_network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=radiant_db
+      - POSTGRES_USER=radiant_user
+      - POSTGRES_PASSWORD=radiant_pass
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: radiant_redis
+    networks:
+      - radiant_network
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    container_name: radiant_backend
+    networks:
+      - radiant_network
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+      - redis
+    command: >
+      sh -c "sleep 5 && 
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+  frontend:
+    build: ./frontend
+    container_name: radiant_frontend
+    networks:
+      - radiant_network
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+
+networks:
+  radiant_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
