@@ -12,10 +12,20 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from datetime import timedelta
 from pathlib import Path
+import os
+import environ
+from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Initialiser environ
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Lire le fichier .env
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -205,8 +215,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-# Stripe settings
-STRIPE_PUBLIC_KEY = "pk_test_51T40jPG5zJAdc6XgbXfkuKMQReJFy4PWfgPq3rO8WyEl1R1AAbqm4MVDGk2ecxYzfxAW3ZKSz9QtvriGOMfLQjse00u5cHRkAY"
-STRIPE_SECRET_KEY = "sk_test_51T40jPG5zJAdc6Xga367EsDJKKunhO8wWmNZTRHwuk5ARuiopnjsSrOlyx2V23oUiGisi1jM8exPT80glWb08bMc00FUx7LmNy"
-# Lien de redirection après paiement réussi
-SITE_URL = "http://localhost:5173"
+STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET', default='')
+SITE_URL = env('SITE_URL', default='http://localhost:5173')
