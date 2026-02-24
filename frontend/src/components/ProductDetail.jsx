@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api';
-const mediaBase = import.meta.env.VITE_API_URL || 'localhost:5431';
+const mediaBase = import.meta.env.VITE_API_MEDIA_URL || 'localhost:5431';
 
 const ProductDetail = () => {
   const { id } = useParams();

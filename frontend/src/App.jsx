@@ -8,7 +8,7 @@ import Register from './components/Register';
 import ProductDetail from './components/ProductDetail';
 import Cart from './context/Cart';
 import Dashboard from './context/Dashboard';
-const mediaBase = import.meta.env.VITE_API_URL || 'localhost:5431';
+const mediaBase = import.meta.env.VITE_API_MEDIA_URL || 'localhost:5431';
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
