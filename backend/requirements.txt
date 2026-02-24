@@ -13,3 +13,4 @@ django-environ==0.13.0
 gunicorn
 uvicorn
 dj_database_url==3.1.2
+whitenoise
