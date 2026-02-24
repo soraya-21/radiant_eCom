@@ -1,14 +1,29 @@
 # Changelog - Radiant Skincare App
 
+## [1.6.0]
+### Added: Categorie du produit (Dans products.models)
+
+## [1.5.3]
+### Feat: Hebergement redis sur render
+
+## [1.5.2]
+### Feat: Creation du SuperUser via le dockerfile
+
+## [1.5.1]
+### Fix
+- Communiquer entre frontend et backend (Cors settings)
+
+## [1.5.0] - 2026-02-24
+### Deploiement du frontend sur Netlify
+
 ## [1.4.1] - 2026-02-24
 ### Deploiement sur Render
 - Utilisation de whitenoise pour la gestion des static files
 
 ## [1.4.0] - 2026-02-24
-### Deploiement sur Render
+### Deploiement du backend sur Render
 - recuperation de l'URL_BASE from .env
 - lancement du backend avec gunicorn
-
 
 ## [1.3.1] - 2026-02-24
 ### Fix
