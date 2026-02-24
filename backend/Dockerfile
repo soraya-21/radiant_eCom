@@ -1,22 +1,25 @@
-FROM python:3.13-slim
+FROM python:3.11-slim
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Installation des dépendances système (nécessaires pour psycopg2 ou d'autres packages)
 RUN apt-get update && apt-get install -y \
-    build-essential \
     libpq-dev \
+    gcc \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Installation des dépendances Python
-COPY requirements.txt /app/
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie du projet
-COPY . /app/
+COPY . .
 
-# On expose le port 8000
+RUN mkdir -p /app/staticfiles
+
 EXPOSE 8000
+
+CMD sh -c "python manage.py migrate --no-input && \
+           python manage.py collectstatic --no-input && \
+           gunicorn core.wsgi:application --bind 0.0.0.0:${PORT:-8000}"
