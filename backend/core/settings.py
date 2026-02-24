@@ -226,7 +226,16 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Configuration WhiteNoise pour compresser et gérer le cache des fichiers
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+# AJOUTE CETTE LIGNE JUSTE EN DESSOUS
 WHITENOISE_MANIFEST_STRICT = False
 
 MEDIA_URL = '/media/'

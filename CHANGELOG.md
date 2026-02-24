@@ -1,5 +1,8 @@
 # Changelog - Radiant Skincare App
 
+## [1.8.1] - 2026-02-24
+### Fix: Conflit whitenoise et Cloudinary avec bootstrap.min.css.map
+
 ## [1.8.0] - 2026-02-24
 ### Fix: A chaque chargement du server, les images ne s'affichent plus
 - integration de Cloudinary
