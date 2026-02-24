@@ -26,7 +26,7 @@ const ProductDetail = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         <div className="bg-gray-50 p-4">
           <img 
-            src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:8000${product.image}`) : ''} 
+            src={product.image ? (product.image.startsWith('http') ? product.image : `${mediaBase}${product.image}`) : ''} 
             alt={product.name} 
             className="w-full h-auto shadow-2xl"
           />
@@ -42,7 +42,7 @@ const ProductDetail = () => {
           </p>
           
           <button className="w-full bg-indigo-950 text-white py-4 uppercase tracking-[0.2em] text-sm hover:bg-indigo-800 transition shadow-lg">
-            Ajouter au rituel
+            Ajouter au panier
           </button>
         </div>
       </div>

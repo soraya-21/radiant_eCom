@@ -35,7 +35,7 @@ const Shop = () => {
           <div key={product.id} className="group flex flex-col">
             <Link to={`/product/${product.id}`} className="block overflow-hidden bg-gray-50 mb-6 relative aspect-[3/4]">
               <img 
-                src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:8000${product.image}`) : ''} 
+                src={product.image ? (product.image.startsWith('http') ? product.image : `${mediaBase}${product.image}`) : ''} 
                 alt={product.name} 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
@@ -88,12 +88,12 @@ function App() {
 
           {user ? (
             <div className="flex items-center space-x-6">
-              <Link to="/dashboard" className="hover:text-indigo-600 transition">Compte</Link>
+              <Link to="/dashboard" className="hover:text-indigo-600 transition">Commandes</Link>
               <button 
                 onClick={logout} 
                 className="text-red-700 hover:text-red-500 transition border-l pl-6 border-gray-200"
               >
-                Quitter
+                Deconnexion
               </button>
             </div>
           ) : (
@@ -126,7 +126,7 @@ function App() {
       {/* FOOTER */}
       <footer className="border-t py-12 mt-20 text-center">
         <p className="text-[9px] uppercase tracking-[0.5em] text-gray-400">
-          &copy; 2026 Radiant PARFUMS &middot; PARIS &middot; HAUTE PARFUMERIE
+          &copy; 2026 Radiant Skincare &middot; Tous droits réservés
         </p>
       </footer>
     </div>

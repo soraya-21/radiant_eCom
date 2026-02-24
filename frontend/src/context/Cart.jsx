@@ -53,7 +53,7 @@ const Cart = () => {
           {cartItems.map((item) => (
             <div key={item.id} className="flex items-center bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
               <img 
-                src={item.image ? (item.image.startsWith('http') ? item.image : `http://localhost:8000${item.image}`) : 'https://via.placeholder.com/100'} 
+                src={item.image ? (item.image.startsWith('http') ? item.image :`${mediaBase}${item.image}`) : 'https://via.placeholder.com/100'} 
                 alt={item.name} 
                 className="w-24 h-24 object-cover rounded-xl"
               />
