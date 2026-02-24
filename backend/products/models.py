@@ -10,7 +10,6 @@ class Product(models.Model):
 
     name = models.CharField(max_length=200)
     brand = models.CharField(max_length=100, default="Radiant Skincare")
-    # Ajout du champ catégorie
     category = models.CharField(
         max_length=50, 
         choices=CATEGORY_CHOICES, 

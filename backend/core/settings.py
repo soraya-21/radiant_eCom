@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'import_export',
     'cloudinary_storage',
     'django.contrib.staticfiles',
     'cloudinary',
@@ -55,6 +56,9 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
 ]
+
+IMPORT_EXPORT_SKIP_ADMIN_LOG = True
+IMPORT_EXPORT_IMPORT_PERMISSION_NAME = 'add'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

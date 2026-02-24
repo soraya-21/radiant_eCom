@@ -16,3 +16,4 @@ dj_database_url==3.1.2
 whitenoise
 cloudinary
 django-cloudinary-storage
+django-import-export-4.4.0

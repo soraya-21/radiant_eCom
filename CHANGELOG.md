@@ -1,5 +1,9 @@
 # Changelog - Radiant Skincare App
 
+## [2.0.0] - 2026-02-24
+### Feat : Added import-export (data) via django admin
+- modification in products.admin
+
 ## [1.9.1] - 2026-02-24
 ### Fix: Cloud_name Cloudinary non reconnu
 - Reparation de la confusion entre key_name et cloud_name
@@ -26,7 +30,7 @@
 - Recharger l'image en db une fois que l'url est bonne
 
 ## [1.6.1]
-### Fix: redirect page after stripe payment not good
+### Fix: redirect page after stripe not finding entry point for client app
 - added /* /index.html   200 to public/redirects
 
 ## [1.6.0]
