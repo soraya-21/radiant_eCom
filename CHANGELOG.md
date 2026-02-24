@@ -1,5 +1,13 @@
 # Changelog - Radiant Skincare App
 
+## [1.9.1] - 2026-02-24
+### Fix: Cloud_name Cloudinary non reconnu
+- Reparation de la confusion entre key_name et cloud_name
+
+## [1.9.0] - 2026-02-24
+### Fix: Il fallait recharger les images en db à chaque nouveau deploiement
+- Introduction de Cloudinary 
+
 ## [1.8.1] - 2026-02-24
 ### Fix: Conflit whitenoise et Cloudinary avec bootstrap.min.css.map
 
