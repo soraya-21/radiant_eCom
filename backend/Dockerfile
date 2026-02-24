@@ -21,5 +21,6 @@ RUN mkdir -p /app/staticfiles
 EXPOSE 8000
 
 CMD sh -c "python manage.py migrate --no-input && \
+           python manage.py shell < create_admin.py && \
            python manage.py collectstatic --no-input && \
            gunicorn core.wsgi:application --bind 0.0.0.0:${PORT:-8000}"
