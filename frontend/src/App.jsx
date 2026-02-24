@@ -45,7 +45,7 @@ const Shop = () => {
 
             <div className="text-center flex-grow">
               <h3 className="text-sm uppercase tracking-[0.2em] font-medium text-gray-900">{product.name}</h3>
-              <p className="text-xs text-gray-500 italic mt-1">{product.category || "Eau de Parfum"}</p>
+              <p className="text-xs text-gray-500 italic mt-1">{product.category}</p>
               <p className="text-indigo-900 font-bold mt-3 mb-4">{product.price} €</p>
             </div>
 
