@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
     'accounts',
     'products',
     'orders',
@@ -225,13 +226,11 @@ SPECTACULAR_SETTINGS = {
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Configuration WhiteNoise pour compresser et gérer le cache des fichiers
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        # Le backend standard de Django, sans WhiteNoise (WhiteNoise servira quand même les fichiers)
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
