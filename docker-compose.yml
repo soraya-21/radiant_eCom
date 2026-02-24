@@ -10,6 +10,7 @@ services:
       - POSTGRES_DB=radiant_db
       - POSTGRES_USER=radiant_user
       - POSTGRES_PASSWORD=radiant_pass
+      - DATABASE_URL=postgresql://radiant_user:radiant_pass@radiant_db:5432/radiant_db
     ports:
       - "5432:5432"
 

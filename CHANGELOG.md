@@ -1,5 +1,15 @@
 # Changelog - Radiant Skincare App
 
+## [1.4.1] - 2026-02-24
+### Deploiement sur Render
+- Utilisation de whitenoise pour la gestion des static files
+
+## [1.4.0] - 2026-02-24
+### Deploiement sur Render
+- recuperation de l'URL_BASE from .env
+- lancement du backend avec gunicorn
+
+
 ## [1.3.1] - 2026-02-24
 ### Fix
 - **Panier (Frontend) :** Correction d'un bug provoquant le vidage du panier en boucle après un paiement réussi.
