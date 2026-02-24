@@ -10,3 +10,5 @@ pillow==12.1.1
 drf-spectacular==0.29.0
 django-redis==6.0.0
 django-environ==0.13.0
+gunicorn
+dj_database_url==3.1.2
