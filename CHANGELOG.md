@@ -1,5 +1,9 @@
 # Changelog - Radiant Skincare App
 
+## [1.6.1]
+### Fix: redirect page after stripe payment not good
+- added /* /index.html   200 to public/redirects
+
 ## [1.6.0]
 ### Added: Categorie du produit (Dans products.models)
 

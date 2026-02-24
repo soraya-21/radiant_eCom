@@ -8,6 +8,7 @@ import Register from './components/Register';
 import ProductDetail from './components/ProductDetail';
 import Cart from './context/Cart';
 import Dashboard from './context/Dashboard';
+const mediaBase = import.meta.env.VITE_API_BASE_URL.replace('/api/', '') || 'localhost:5431';
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
@@ -35,7 +36,7 @@ const Shop = () => {
           <div key={product.id} className="group flex flex-col">
             <Link to={`/product/${product.id}`} className="block overflow-hidden bg-gray-50 mb-6 relative aspect-[3/4]">
               <img 
-                src={product.image ? (product.image.startsWith('http') ? product.image : `${mediaBase}${product.image}`) : ''} 
+                src={product.image ? (product.image.startsWith('https') ? product.image : `${mediaBase}${product.image}`) : ''} 
                 alt={product.name} 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
