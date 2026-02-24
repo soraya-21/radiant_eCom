@@ -14,3 +14,5 @@ gunicorn
 uvicorn
 dj_database_url==3.1.2
 whitenoise
+cloudinary
+django-cloudinary-storage

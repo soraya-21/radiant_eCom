@@ -1,5 +1,19 @@
 # Changelog - Radiant Skincare App
 
+## [1.8.0] - 2026-02-24
+### Fix: A chaque chargement du server, les images ne s'affichent plus
+- integration de Cloudinary
+
+## [1.7.0] - 2026-02-24
+### Milestone
+- **Full Integration :** Cycle complet de vente opérationnel (Panier -> Paiement -> Webhook -> Validation).
+- **Production Ready :** Infrastructure Cloud (Netlify/Render/Stripe) stabilisée.
+
+## [1.6.2] - 2026-02-24
+### Fix: Image presente en db qui ne s'affiche pas en prod
+- Changement de l'url de base (sans le /)
+- Recharger l'image en db une fois que l'url est bonne
+
 ## [1.6.1]
 ### Fix: redirect page after stripe payment not good
 - added /* /index.html   200 to public/redirects
