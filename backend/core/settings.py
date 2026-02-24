@@ -231,11 +231,10 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage", 
     },
 }
 
-# AJOUTE CETTE LIGNE JUSTE EN DESSOUS
 WHITENOISE_MANIFEST_STRICT = False
 
 MEDIA_URL = '/media/'
