@@ -74,8 +74,10 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "https://radiant-ecom-front.netlify.app",
+    "https://radiant-ecom-front.netlify.app/",
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Sécurité HTTPS
 if not DEBUG:
