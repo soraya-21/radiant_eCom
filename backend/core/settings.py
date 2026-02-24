@@ -38,11 +38,7 @@ SECRET_KEY = 'django-insecure-=33dnw$&xn6+!rw8z&#us8pu#ta&32$w3se(cxt@xyl0$i&6c1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -119,8 +115,6 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        # 1. On cherche DATABASE_URL
-        # 2. Si c'est vide, on utilise SQLite pour éviter que Django ne crash au lancement
         default=os.getenv('DATABASE_URL', f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
         conn_max_age=600
     )
@@ -152,14 +146,15 @@ SIMPLE_JWT = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": env('REDIS_URL', default="redis://127.0.0.1:6379/1"),
+        "LOCATION": os.getenv("REDIS_URL", "redis://127.0.0.1:6379"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }
 
-# Utiliser Redis pour stocker aussi les sessions (Optionnel mais recommandé)
+CELERY_BROKER_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379")
+
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
