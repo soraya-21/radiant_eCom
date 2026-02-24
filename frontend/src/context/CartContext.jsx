@@ -1,35 +1,43 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import api from '../api'; // <--- ASSURE-TOI QUE CE CHEMIN EST CORRECT
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
     const savedCart = localStorage.getItem('radiant_cart');
-    return savedCart ? JSON.parse(savedCart) : [];
+    try {
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (e) {
+      return [];
+    }
   });
 
   useEffect(() => {
+    localStorage.setItem('radiant_cart', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  useEffect(() => {
     const fetchRemoteCart = async () => {
-        // Si l'utilisateur est connecté et le panier local est vide
-        if (localStorage.getItem('access_token') && cartItems.length === 0) {
+      if (localStorage.getItem('access_token') && cartItems.length === 0) {
         try {
-            const res = await api.get('orders/get-cart/');
-            if (res.data.cart.length > 0) {
+          const res = await api.get('orders/get-cart/');
+          if (res.data?.cart?.length > 0) {
             setCartItems(res.data.cart);
-            }
+          }
         } catch (err) {
-            console.error("Erreur récup Redis:", err);
+          console.error("Erreur récup Redis:", err);
         }
-        }
+      }
     };
     fetchRemoteCart();
-    }, []);
+  }, []);
 
-  // LOGIQUE DE VIDAGE APRÈS PAIEMENT
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     if (query.get("success")) {
       clearCart();
+      // Nettoie l'URL pour éviter de vider le panier en boucle si on rafraîchit
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, []);
@@ -39,7 +47,7 @@ export const CartProvider = ({ children }) => {
       const isItemInCart = prevItems.find((item) => item.id === product.id);
       if (isItemInCart) {
         return prevItems.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product.id ? { ...item, quantity: (item.quantity || 1) + 1 } : item
         );
       }
       return [...prevItems, { ...product, quantity: 1 }];
@@ -49,7 +57,10 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = (productId) => {
     setCartItems((prevItems) => {
       const existing = prevItems.find(item => item.id === productId);
-      if (existing.quantity === 1) {
+      
+      if (!existing) return prevItems;
+
+      if (existing.quantity <= 1) {
         return prevItems.filter(item => item.id !== productId);
       }
       return prevItems.map(item => 
@@ -63,7 +74,7 @@ export const CartProvider = ({ children }) => {
     localStorage.removeItem('radiant_cart');
   };
 
-  const getCartCount = () => cartItems.reduce((total, item) => total + item.quantity, 0);
+  const getCartCount = () => cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
 
   return (
     <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart, getCartCount }}>

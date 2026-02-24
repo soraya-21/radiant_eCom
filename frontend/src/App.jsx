@@ -35,7 +35,7 @@ const Shop = () => {
           <div key={product.id} className="group flex flex-col">
             <Link to={`/product/${product.id}`} className="block overflow-hidden bg-gray-50 mb-6 relative aspect-[3/4]">
               <img 
-                src={product.image || 'https://via.placeholder.com/600x800?text=Radiant+Fragrance'} 
+                src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:8000${product.image}`) : ''} 
                 alt={product.name} 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />

@@ -25,6 +25,7 @@ class CreateOrderView(APIView):
 
     def post(self, request):
         data = request.data
+        user = request.user
         try:
             with transaction.atomic():
                 order = Order.objects.create(
@@ -56,6 +57,7 @@ class CreateOrderView(APIView):
                     })
 
                 checkout_session = stripe.checkout.Session.create(
+                    customer_email=user.email,
                     payment_method_types=['card'],
                     line_items=line_items,
                     mode='payment',

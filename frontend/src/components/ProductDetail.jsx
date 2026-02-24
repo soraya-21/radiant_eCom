@@ -26,7 +26,7 @@ const ProductDetail = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         <div className="bg-gray-50 p-4">
           <img 
-            src={product.image || 'https://via.placeholder.com/600x800'} 
+            src={product.image ? (product.image.startsWith('http') ? product.image : `http://localhost:8000${product.image}`) : ''} 
             alt={product.name} 
             className="w-full h-auto shadow-2xl"
           />

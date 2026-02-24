@@ -1,10 +1,26 @@
 # Changelog - Radiant Skincare App
 
+## [1.3.1] - 2026-02-24
+### Fix
+- **Panier (Frontend) :** Correction d'un bug provoquant le vidage du panier en boucle après un paiement réussi.
+- **Navigation :** Implémentation de `window.history.replaceState` pour nettoyer l'URL des paramètres de succès (`?success=true`) immédiatement après traitement.
+- **Stabilité :** Optimisation du cycle de vie du composant `CartProvider` pour garantir une exécution unique de la logique post-achat.
+
+## [1.3.1] - 2026-02-24
+### Fix: affichage des image des produits
+- inclusion explicite du champ image dans le serailizer de l'app Product
+- creation de volume radiant_media dans le docker-compose.yml
+- appel via une url absolue dans le frontend
+
+## [1.3.0] - 2026-02-24
+### Creation d'un super utilisateur dans le backend pour l'ajout des produits en db
+
 ## [1.2.0] - 2026-02-23
 ### Added: Docker-compose for build
 - Dockerfile dans le dossier Backend
 - Dockerfile dans le dossier Frontend
 - Docker-compose.yml pour lancer les deux apps
+
 ## [1.1.0] - 2026-02-23
 ### Feature: Automatic Order Tracking
 - Mise en place de la redirection automatique Stripe -> Dashboard.
