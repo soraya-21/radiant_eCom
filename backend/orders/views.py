@@ -1,4 +1,6 @@
 import stripe
+import json
+import logging
 from django.conf import settings
 from django.core.cache import cache
 from django.db import transaction
@@ -12,6 +14,8 @@ from django.http import HttpResponse
 
 from .models import Order, OrderItem
 from .serializers import OrderSerializer
+
+logger = logging.getLogger(__name__)
 
 # Configuration de la clé secrète Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -63,16 +67,16 @@ class CreateOrderView(APIView):
                     mode='payment',
                     success_url=settings.SITE_URL + '/dashboard?success=true',
                     cancel_url=settings.SITE_URL + '/cart?canceled=true',
-                    metadata={'order_id': order.id}
+                    metadata={'order_id': str(order.id)}  # Convertir en string
                 )
 
-                #Succès : On supprime le panier temporaire dans Redis
+                logger.info(f"Commande {order.id} créée - Session Stripe: {checkout_session.id}")
                 cache.delete(f"cart_{request.user.id}")
 
                 return Response({'stripe_url': checkout_session.url}, status=201)
                 
         except Exception as e:
-            print(f"STRIPE ERROR: {str(e)}")
+            logger.error(f"STRIPE ERROR: {str(e)}")
             return Response({'error': str(e)}, status=400)
 
 
@@ -90,12 +94,8 @@ class MyOrdersView(generics.ListAPIView):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def sync_cart(request):
-    """
-    Enregistre l'état actuel du panier dans Redis pour la persistance cross-device.
-    """
     user_id = request.user.id
     cart_data = request.data.get('cart', [])
-    # Expire après 24 heures
     cache.set(f"cart_{user_id}", cart_data, timeout=86400)
     return Response({"status": "Panier synchronisé dans Redis"})
 
@@ -103,40 +103,76 @@ def sync_cart(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_remote_cart(request):
-    """
-    Récupère le panier stocké dans Redis (utile lors d'une reconnexion).
-    """
     user_id = request.user.id
     cart_data = cache.get(f"cart_{user_id}")
     return Response({"cart": cart_data if cart_data else []})
 
+
 @csrf_exempt
 def stripe_webhook(request):
+    """
+    Gestionnaire du webhook Stripe pour mettre à jour le statut des commandes
+    """
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
     endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
+    logger.info(f"Webhook reçu - Signature: {sig_header[:20]}...")
 
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, endpoint_secret
         )
+        logger.info(f"✅ Signature valide - Event type: {event['type']}")
     except ValueError as e:
+        logger.error(f"Payload invalide: {str(e)}")
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError as e:
+        logger.error(f"Signature invalide: {str(e)}")
+        return HttpResponse(status=400)
+    except Exception as e:
+        logger.error(f"Erreur webhook: {str(e)}")
         return HttpResponse(status=400)
 
+    # Gestion de tous les événements de paiement
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
+        logger.info(f"Session complétée: {session.get('id')}")
+        logger.info(f"Metadata: {session.get('metadata')}")
         
         order_id = session.get('metadata', {}).get('order_id')
+        logger.info(f"🔍 Order ID trouvé: {order_id}")
         
         if order_id:
             try:
+                # Convertir en int si c'est une string
+                order_id = int(order_id) if isinstance(order_id, str) else order_id
                 order = Order.objects.get(id=order_id)
-                order.status = 'paid'
-                order.save()
-                print(f" Commande {order_id} marquée comme PAYÉE.")
+                
+                if order.status != 'paid':
+                    order.status = 'paid'
+                    order.payment_id = session.get('payment_intent')
+                    order.save()
+                    logger.info(f"Commande {order_id} marquée comme PAYÉE")
+                else:
+                    logger.info(f"Commande {order_id} déjà payée")
+                    
             except Order.DoesNotExist:
-                print(f" Erreur: Commande {order_id} introuvable.")
+                logger.error(f"Commande {order_id} introuvable en base")
+            except Exception as e:
+                logger.error(f"Erreur mise à jour: {str(e)}")
+        else:
+            logger.warning(f"Pas d'order_id dans metadata")
+
+    elif event['type'] == 'checkout.session.async_payment_succeeded':
+        # Cas des paiements asynchrones
+        logger.info(f"Paiement asynchrone réussi")
+        
+    elif event['type'] == 'checkout.session.async_payment_failed':
+        # Cas des paiements asynchrones échoués
+        logger.warning(f"Paiement asynchrone échoué")
+    
+    else:
+        logger.info(f"ℹÉvénement ignoré: {event['type']}")
 
     return HttpResponse(status=200)
