@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 import api from '../api';
 
 const mediaBase = import.meta.env.VITE_API_MEDIA_URL || 'localhost:5431';
 
 const Cart = () => {
+  const { isDark } = useTheme();
   const { cartItems, addToCart, removeFromCart, clearCart, getCartCount } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success') === 'true') {
+      clearCart();
+      setTimeout(() => navigate('/dashboard'), 2000);
+    }
+  }, []);
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -40,30 +50,18 @@ const Cart = () => {
     }
   };
 
-  // Vérifier si paiement réussi (paramètre success dans l'URL)
-  React.useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('success') === 'true') {
-      clearCart();
-      // Redirection vers dashboard après 2 secondes
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 2000);
-    }
-  }, [navigate, clearCart]);
-
   if (cartItems.length === 0) {
     return (
-      <div className="bg-gradient-to-b from-slate-950 to-slate-900 min-h-screen flex items-center justify-center px-4">
+      <div className={`min-h-screen flex items-center justify-center px-4 ${isDark ? 'bg-gradient-to-b from-slate-950 to-slate-900' : 'bg-gradient-to-b from-gray-50 to-white'}`}>
         <div className="max-w-md text-center">
           <div className="text-6xl mb-6">🛍️</div>
-          <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">Votre panier est vide</h2>
-          <p className="text-gray-400 mb-8">Découvrez notre collection et trouvez vos produits préférés</p>
+          <h2 className={`text-3xl md:text-4xl font-serif mb-4 ${isDark ? 'text-white' : 'text-gray-950'}`}>Votre panier est vide</h2>
+          <p className={`mb-8 ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>Découvrez notre collection et trouvez vos produits préférés</p>
           <Link 
             to="/shop" 
-            className="inline-block bg-gradient-to-r from-gold-500 to-rose-500 text-white px-8 py-4 rounded-lg font-bold hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest border-2 border-gold-400"
+            className={`inline-block py-3 px-8 rounded-lg font-semibold uppercase tracking-widest transition ${isDark ? 'bg-gold-500 hover:bg-gold-600 text-white' : 'bg-gold-700 hover:bg-gold-800 text-white'}`}
           >
-            Continuer vos achats
+            Voir la boutique
           </Link>
         </div>
       </div>
@@ -71,62 +69,54 @@ const Cart = () => {
   }
 
   return (
-    <div className="bg-gradient-to-b from-slate-950 to-slate-900 min-h-screen py-12 md:py-16 px-4">
+    <div className={`min-h-screen py-12 md:py-16 px-4 ${isDark ? 'bg-gradient-to-b from-slate-950 to-slate-900' : 'bg-gradient-to-b from-gray-50 to-white'}`}>
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-serif text-white mb-2">Mon Panier</h1>
-        <p className="text-gold-400 text-sm mb-10 uppercase tracking-widest font-semibold">
-          {getCartCount()} article{getCartCount() > 1 ? 's' : ''} dans votre panier
-        </p>
+        <h1 className={`text-4xl md:text-5xl font-serif mb-12 ${isDark ? 'text-white' : 'text-gray-950'}`}>Panier</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-          {/* CART ITEMS */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {/* ITEMS */}
           <div className="lg:col-span-2">
-            <div className="space-y-4">
-              {cartItems.map((item) => (
-                <div 
-                  key={item.id} 
-                  className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 bg-slate-800 border-2 border-gold-500 p-4 sm:p-6 rounded-xl hover:border-gold-400 transition"
-                >
-                  {/* PRODUCT IMAGE */}
-                  <div className="w-full sm:w-24 flex-shrink-0">
-                    <img
-                      src={item.image ? (item.image.startsWith('http') ? item.image : `${mediaBase}${item.image}`) : 'https://via.placeholder.com/100'}
-                      alt={item.name}
-                      className="w-full sm:w-24 h-24 object-cover rounded-lg"
-                    />
-                  </div>
-
-                  {/* PRODUCT INFO */}
-                  <div className="flex-grow w-full sm:w-auto">
-                    <h3 className="text-lg sm:text-base font-bold text-white mb-1 md:mb-2">{item.name}</h3>
-                    <p className="text-gold-400 text-sm md:text-base font-semibold mb-3 md:mb-4">{item.price} €</p>
-
-                    {/* QUANTITY SELECTOR */}
-                    <div className="flex items-center gap-2 bg-slate-900 border-2 border-gold-500 rounded-lg w-fit p-1">
-                      <button 
-                        onClick={() => removeFromCart(item.id)} 
-                        className="px-3 py-2 text-gold-400 hover:text-gold-300 transition font-bold"
+            <div className="space-y-6">
+              {cartItems.map(item => (
+                <div key={item.id} className={`flex gap-6 p-6 rounded-xl border-2 ${isDark ? 'bg-slate-800 border-gold-500/30' : 'bg-white border-gold-300'}`}>
+                  <img
+                    src={item.image ? (item.image.startsWith('https') ? item.image : `${mediaBase}${item.image}`) : ''}
+                    alt={item.name}
+                    className="w-24 h-24 object-cover rounded-lg"
+                  />
+                  
+                  <div className="flex-1">
+                    <h3 className={`text-lg font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-950'}`}>
+                      {item.name}
+                    </h3>
+                    <p className={`mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {item.category}
+                    </p>
+                    
+                    <div className="flex items-center gap-4">
+                      <button
+                        onClick={() => item.quantity > 1 ? addToCart({...item, quantity: -1}) : removeFromCart(item.id)}
+                        className={`px-3 py-1 rounded border-2 ${isDark ? 'border-gold-500/30 text-white hover:bg-slate-700' : 'border-gold-300 text-gray-950 hover:bg-gray-100'}`}
                       >
                         −
                       </button>
-                      <span className="px-4 py-2 font-bold text-white">{item.quantity}</span>
-                      <button 
-                        onClick={() => addToCart(item)} 
-                        className="px-3 py-2 text-gold-400 hover:text-gold-300 transition font-bold"
+                      <span className={`px-4 ${isDark ? 'text-white' : 'text-gray-950'}`}>{item.quantity}</span>
+                      <button
+                        onClick={() => addToCart({...item, quantity: 1})}
+                        className={`px-3 py-1 rounded border-2 ${isDark ? 'border-gold-500/30 text-white hover:bg-slate-700' : 'border-gold-300 text-gray-950 hover:bg-gray-100'}`}
                       >
                         +
                       </button>
                     </div>
                   </div>
 
-                  {/* PRICE & REMOVE */}
-                  <div className="flex flex-col items-end gap-4 w-full sm:w-auto">
-                    <p className="text-2xl sm:text-xl font-bold text-gold-400">
+                  <div className="text-right">
+                    <p className={`text-2xl font-bold mb-4 ${isDark ? 'text-gold-400' : 'text-gold-700'}`}>
                       {(item.price * item.quantity).toFixed(2)} €
                     </p>
                     <button
                       onClick={() => removeFromCart(item.id)}
-                      className="text-rose-400 hover:text-rose-300 text-sm font-semibold transition"
+                      className={`text-sm px-3 py-1 rounded transition ${isDark ? 'text-rose-400 hover:bg-rose-400/10' : 'text-rose-600 hover:bg-rose-100'}`}
                     >
                       Supprimer
                     </button>
@@ -134,56 +124,44 @@ const Cart = () => {
                 </div>
               ))}
             </div>
-
-            <button
-              onClick={clearCart}
-              className="mt-8 w-full sm:w-auto text-gray-400 hover:text-gray-300 text-sm font-semibold transition border-t border-gold-500 pt-6"
-            >
-              Vider le panier
-            </button>
           </div>
 
           {/* SUMMARY */}
-          <div className="lg:col-span-1">
-            <div className="bg-slate-800 border-2 border-gold-500 p-6 md:p-8 rounded-xl sticky top-24 space-y-6">
-              <h2 className="text-2xl font-serif text-white">Résumé</h2>
-
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between text-gray-300">
-                  <span>Sous-total</span>
-                  <span>{totalPrice.toFixed(2)} €</span>
-                </div>
-                <div className="flex justify-between text-gray-300">
-                  <span>Livraison</span>
-                  <span className="text-gold-400 font-semibold">Gratuite</span>
-                </div>
-                <div className="flex justify-between text-gray-300">
-                  <span>TVA</span>
-                  <span>{(totalPrice * 0.2).toFixed(2)} €</span>
-                </div>
+          <div className={`h-fit p-6 rounded-xl border-2 sticky top-24 ${isDark ? 'bg-slate-800 border-gold-500/30' : 'bg-white border-gold-300'}`}>
+            <h2 className={`text-2xl font-semibold mb-6 ${isDark ? 'text-white' : 'text-gray-950'}`}>Résumé</h2>
+            
+            <div className={`space-y-4 mb-6 pb-6 border-b ${isDark ? 'border-gold-500/20' : 'border-gold-300'}`}>
+              <div className="flex justify-between">
+                <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>Sous-total</span>
+                <span className={isDark ? 'text-white' : 'text-gray-950'}>{totalPrice.toFixed(2)} €</span>
               </div>
-
-              <div className="border-t border-gold-500 pt-6">
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-lg text-white font-semibold">Total TTC</span>
-                  <span className="text-3xl md:text-2xl font-bold text-gold-400">
-                    {(totalPrice * 1.2).toFixed(2)} €
-                  </span>
-                </div>
-
-                <button
-                  onClick={handleCheckout}
-                  disabled={isProcessing}
-                  className={`w-full bg-gradient-to-r from-gold-500 to-rose-500 text-white py-4 font-bold text-lg rounded-lg hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest border-2 border-gold-400 ${
-                    isProcessing ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                >
-                  {isProcessing ? 'Traitement...' : 'Passer la commande'}
-                </button>
-
-                <p className="text-center text-gray-400 text-xs mt-4">Paiement sécurisé via Stripe</p>
+              <div className="flex justify-between">
+                <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>Livraison</span>
+                <span className={isDark ? 'text-white' : 'text-gray-950'}>Gratuite</span>
               </div>
             </div>
+
+            <div className="flex justify-between mb-8">
+              <span className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-gray-950'}`}>Total</span>
+              <span className={`text-3xl font-bold ${isDark ? 'text-gold-400' : 'text-gold-700'}`}>
+                {totalPrice.toFixed(2)} €
+              </span>
+            </div>
+
+            <button
+              onClick={handleCheckout}
+              disabled={isProcessing}
+              className={`w-full py-3 px-4 rounded-lg font-semibold uppercase tracking-widest transition mb-4 ${isDark ? 'bg-gold-500 hover:bg-gold-600 text-white disabled:opacity-50' : 'bg-gold-700 hover:bg-gold-800 text-white disabled:opacity-50'}`}
+            >
+              {isProcessing ? 'Traitement...' : 'Procéder au paiement'}
+            </button>
+
+            <Link
+              to="/shop"
+              className={`block text-center py-3 px-4 rounded-lg border-2 font-semibold uppercase tracking-widest transition ${isDark ? 'border-gold-500/30 text-gold-400 hover:bg-slate-700' : 'border-gold-300 text-gold-700 hover:bg-gray-100'}`}
+            >
+              Continuer vos achats
+            </Link>
           </div>
         </div>
       </div>

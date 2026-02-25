@@ -27,19 +27,19 @@ const Shop = () => {
   }, []);
 
   if (loading) return (
-    <div className={`flex justify-center py-20 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+    <div className={`flex justify-center py-20 ${isDark ? 'text-white' : 'text-gray-900'}`}>
       <div className="text-center">
         <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gold-500 mb-4"></div>
-        <p className={`italic ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Chargement de la collection Radiant...</p>
+        <p className={`italic ${isDark ? 'text-gray-200' : 'text-gray-700'}`}>Chargement de la collection Radiant...</p>
       </div>
     </div>
   );
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gradient-to-b from-slate-950 to-slate-900' : 'bg-gradient-to-b from-white to-gray-50'} py-12 md:py-20 px-4 md:px-6`}>
+    <div className={`min-h-screen ${isDark ? 'bg-gradient-to-b from-slate-950 to-slate-900' : 'bg-gradient-to-b from-gray-50 to-white'} py-12 md:py-20 px-4 md:px-6`}>
       <div className="max-w-7xl mx-auto">
         <header className="mb-16 md:mb-20 text-center">
-          <h2 className={`text-4xl md:text-6xl font-serif tracking-wider uppercase ${isDark ? 'text-white' : 'text-slate-900'} mb-4 animate-fade-in`}>
+          <h2 className={`text-4xl md:text-6xl font-serif tracking-wider uppercase ${isDark ? 'text-white' : 'text-gray-950'} mb-4 animate-fade-in`}>
             Notre Collection
           </h2>
           <div className="flex justify-center gap-2">
@@ -54,7 +54,7 @@ const Shop = () => {
             <div key={product.id} className="group flex flex-col h-full">
               <Link 
                 to={`/product/${product.id}`} 
-                className={`block overflow-hidden ${isDark ? 'bg-gradient-to-br from-slate-800 to-slate-900' : 'bg-gradient-to-br from-gray-100 to-gray-200'} mb-6 relative aspect-[3/4] rounded-xl border ${isDark ? 'border-gold-500/20 hover:border-gold-400/50' : 'border-gold-300 hover:border-gold-400'} transition-all duration-300`}
+                className={`block overflow-hidden ${isDark ? 'bg-gradient-to-br from-slate-800 to-slate-900' : 'bg-white border border-gray-200'} mb-6 relative aspect-[3/4] rounded-xl hover:shadow-2xl transition-all duration-300`}
               >
                 <img
                   src={product.image ? (product.image.startsWith('https') ? product.image : `${mediaBase}${product.image}`) : ''}
@@ -64,21 +64,21 @@ const Shop = () => {
                 <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-t from-black/60 via-black/0 to-transparent' : 'bg-gradient-to-t from-white/40 via-white/0 to-transparent'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
               </Link>
 
-              <div className={`text-center flex-grow flex flex-col justify-between`}>
+              <div className={`text-center flex-grow flex flex-col justify-between py-4`}>
                 <div>
-                  <h3 className={`text-base md:text-lg uppercase tracking-widest font-semibold ${isDark ? 'text-white group-hover:text-gold-400' : 'text-slate-900 group-hover:text-gold-600'} transition mb-2`}>
+                  <h3 className={`text-base md:text-lg uppercase tracking-widest font-semibold ${isDark ? 'text-white' : 'text-gray-950'} group-hover:text-gold-500 transition mb-2`}>
                     {product.name}
                   </h3>
-                  <p className={`text-xs md:text-sm italic mb-3 ${isDark ? 'text-gold-400' : 'text-gold-600'}`}>{product.category}</p>
+                  <p className={`text-xs md:text-sm italic mb-3 ${isDark ? 'text-gold-400' : 'text-gold-700'}`}>{product.category}</p>
                 </div>
-                <p className={`text-xl md:text-2xl font-bold ${isDark ? 'text-gold-400' : 'text-gold-600'} mb-6`}>
+                <p className={`text-xl md:text-2xl font-bold ${isDark ? 'text-gold-400' : 'text-gold-700'} mb-6`}>
                   {product.price} €
                 </p>
               </div>
 
               <button
                 onClick={() => addToCart(product)}
-                className={`w-full border-2 py-3 md:py-4 text-xs md:text-sm uppercase tracking-widest font-bold rounded-lg transition-all duration-300 ${isDark ? 'border-gold-500 text-gold-400 hover:bg-gradient-to-r hover:from-gold-500 hover:to-rose-500 hover:text-white hover:border-transparent' : 'border-gold-600 text-gold-600 hover:bg-gold-600 hover:text-white'}`}
+                className={`w-full border-2 py-3 md:py-4 text-xs md:text-sm uppercase tracking-widest font-bold rounded-lg transition-all duration-300 ${isDark ? 'border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-white' : 'border-gold-600 text-gold-700 hover:bg-gold-600 hover:text-white'}`}
               >
                 Ajouter au panier
               </button>
@@ -88,7 +88,7 @@ const Shop = () => {
 
         {products.length === 0 && !loading && (
           <div className="text-center py-20">
-            <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>Aucun produit disponible pour le moment.</p>
+            <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Aucun produit disponible pour le moment.</p>
           </div>
         )}
       </div>
@@ -105,13 +105,13 @@ function App() {
   const { isDark, toggleTheme } = useTheme();
 
   return (
-    <div className={`min-h-screen font-sans ${isDark ? 'bg-slate-950 text-white' : 'bg-white text-slate-900'}`}>
+    <div className={`min-h-screen font-sans ${isDark ? 'bg-slate-950 text-white' : 'bg-white text-gray-950'}`}>
       {/* NAVBAR */}
-      <nav className={`sticky top-0 z-50 ${isDark ? (isHome ? 'bg-transparent' : 'bg-slate-950/95 backdrop-blur border-b border-gold-500/20') : (isHome ? 'bg-transparent' : 'bg-white/95 backdrop-blur border-b border-gold-300')} transition-all duration-300`}>
+      <nav className={`sticky top-0 z-50 transition-all duration-300 ${isDark ? (isHome ? 'bg-transparent' : 'bg-slate-950/95 backdrop-blur border-b border-gold-500/30') : (isHome ? 'bg-transparent' : 'bg-white/95 backdrop-blur border-b border-gold-200')}`}>
         <div className={`max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6 flex justify-between items-center`}>
           <Link 
             to="/" 
-            className={`text-2xl md:text-3xl font-serif tracking-widest uppercase ${isDark ? 'text-white hover:text-gold-400' : 'text-slate-900 hover:text-gold-600'} transition`}
+            className={`text-2xl md:text-3xl font-serif tracking-widest uppercase ${isDark ? 'text-white hover:text-gold-400' : 'text-gray-950 hover:text-gold-600'} transition`}
           >
             Radiant
           </Link>
@@ -120,7 +120,7 @@ function App() {
             {/* THEME TOGGLE BUTTON */}
             <button
               onClick={toggleTheme}
-              className={`p-2 rounded-lg transition ${isDark ? 'bg-slate-800 hover:bg-slate-700 text-gold-400' : 'bg-gray-200 hover:bg-gray-300 text-gold-600'}`}
+              className={`p-2 rounded-lg transition ${isDark ? 'bg-slate-800 hover:bg-slate-700 text-gold-400' : 'bg-gray-100 hover:bg-gray-200 text-gold-700'}`}
               title={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
             >
               {isDark ? (
@@ -134,10 +134,10 @@ function App() {
               )}
             </button>
 
-            <div className={`hidden md:flex items-center gap-4 md:gap-8 text-xs md:text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <div className={`hidden md:flex items-center gap-4 md:gap-8 text-xs md:text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white' : 'text-gray-950'}`}>
               <Link 
                 to="/shop" 
-                className={`hover:text-gold-400 transition`}
+                className={`${isDark ? 'hover:text-gold-400' : 'hover:text-gold-600'} transition`}
               >
                 Boutique
               </Link>
@@ -148,7 +148,7 @@ function App() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
                 </svg>
                 {getCartCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gradient-to-r from-gold-500 to-rose-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-pulse">
+                  <span className="absolute -top-1 -right-1 bg-gold-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-pulse">
                     {getCartCount()}
                   </span>
                 )}
@@ -158,13 +158,13 @@ function App() {
                 <div className="flex items-center gap-4 md:gap-6">
                   <Link 
                     to="/dashboard" 
-                    className={`hover:text-gold-400 transition`}
+                    className={`${isDark ? 'hover:text-gold-400' : 'hover:text-gold-600'} transition`}
                   >
                     Commandes
                   </Link>
                   <button
                     onClick={logout}
-                    className={`text-rose-400 hover:text-rose-300 transition ${isDark ? 'border-l border-gray-600 pl-4 md:pl-6' : 'border-l border-gray-300 pl-4 md:pl-6'}`}
+                    className={`text-rose-500 hover:text-rose-600 transition ${isDark ? 'border-l border-gray-600 pl-4 md:pl-6' : 'border-l border-gray-300 pl-4 md:pl-6'}`}
                   >
                     Déconnexion
                   </button>
@@ -173,13 +173,13 @@ function App() {
                 <div className="flex items-center gap-3 md:gap-4">
                   <Link 
                     to="/login" 
-                    className={`hover:text-gold-400 transition`}
+                    className={`${isDark ? 'hover:text-gold-400' : 'hover:text-gold-600'} transition`}
                   >
                     Connexion
                   </Link>
                   <Link 
                     to="/register" 
-                    className={`border px-4 py-2 rounded-lg transition ${isDark ? 'border-gold-500 hover:bg-gold-500 hover:text-slate-950' : 'border-gold-600 hover:bg-gold-600 hover:text-white'}`}
+                    className={`border-2 px-4 py-2 rounded-lg transition ${isDark ? 'border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-white' : 'border-gold-600 text-gold-700 hover:bg-gold-600 hover:text-white'}`}
                   >
                     S'inscrire
                   </Link>
@@ -190,7 +190,7 @@ function App() {
             {/* HAMBURGER MENU */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`md:hidden p-2 ${isDark ? 'text-gold-400 hover:bg-slate-800' : 'text-gold-600 hover:bg-gray-100'} rounded-lg`}
+              className={`md:hidden p-2 ${isDark ? 'text-gold-400 hover:bg-slate-800' : 'text-gold-700 hover:bg-gray-100'} rounded-lg`}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
@@ -201,18 +201,18 @@ function App() {
 
         {/* MOBILE MENU */}
         {mobileMenuOpen && (
-          <div className={`md:hidden border-t ${isDark ? 'border-gold-500/20 bg-slate-900' : 'border-gold-300 bg-gray-50'}`}>
+          <div className={`md:hidden border-t ${isDark ? 'border-gold-500/30 bg-slate-900' : 'border-gold-200 bg-gray-50'}`}>
             <div className={`px-4 py-3 space-y-3 max-w-7xl mx-auto`}>
               <Link 
                 to="/shop" 
-                className={`block py-2 text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white hover:text-gold-400' : 'text-slate-900 hover:text-gold-600'} transition`}
+                className={`block py-2 text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white hover:text-gold-400' : 'text-gray-950 hover:text-gold-600'} transition`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Boutique
               </Link>
               <Link 
                 to="/cart" 
-                className={`block py-2 text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white hover:text-gold-400' : 'text-slate-900 hover:text-gold-600'} transition`}
+                className={`block py-2 text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white hover:text-gold-400' : 'text-gray-950 hover:text-gold-600'} transition`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Panier ({getCartCount()})
@@ -220,7 +220,7 @@ function App() {
               {user && (
                 <Link 
                   to="/dashboard" 
-                  className={`block py-2 text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white hover:text-gold-400' : 'text-slate-900 hover:text-gold-600'} transition`}
+                  className={`block py-2 text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white hover:text-gold-400' : 'text-gray-950 hover:text-gold-600'} transition`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Mes Commandes
@@ -230,14 +230,14 @@ function App() {
                 <>
                   <Link 
                     to="/login" 
-                    className={`block py-2 text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white hover:text-gold-400' : 'text-slate-900 hover:text-gold-600'} transition`}
+                    className={`block py-2 text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white hover:text-gold-400' : 'text-gray-950 hover:text-gold-600'} transition`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Connexion
                   </Link>
                   <Link 
                     to="/register" 
-                    className={`block py-2 text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white hover:text-gold-400' : 'text-slate-900 hover:text-gold-600'} transition`}
+                    className={`block py-2 text-sm uppercase tracking-widest font-semibold ${isDark ? 'text-white hover:text-gold-400' : 'text-gray-950 hover:text-gold-600'} transition`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     S'inscrire
@@ -250,7 +250,7 @@ function App() {
                     logout();
                     setMobileMenuOpen(false);
                   }}
-                  className="block w-full text-left py-2 text-sm uppercase tracking-widest font-semibold text-rose-400 hover:text-rose-300 transition"
+                  className={`block w-full text-left py-2 text-sm uppercase tracking-widest font-semibold text-rose-500 hover:text-rose-600 transition`}
                 >
                   Déconnexion
                 </button>
@@ -273,23 +273,23 @@ function App() {
       </main>
 
       {/* FOOTER */}
-      <footer className={`border-t py-12 md:py-16 mt-20 px-4 ${isDark ? 'bg-slate-950 border-gold-500/20' : 'bg-gray-50 border-gold-300'}`}>
+      <footer className={`border-t py-12 md:py-16 mt-20 px-4 ${isDark ? 'bg-slate-950 border-gold-500/30' : 'bg-gray-50 border-gold-200'}`}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-8">
             <div className="text-center md:text-left">
-              <h3 className={`font-semibold mb-3 text-sm md:text-base ${isDark ? 'text-gold-400' : 'text-gold-600'}`}>À Propos</h3>
-              <p className={`text-xs md:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Soins premium pour une belle naturelle</p>
+              <h3 className={`font-semibold mb-3 text-sm md:text-base ${isDark ? 'text-gold-400' : 'text-gold-700'}`}>À Propos</h3>
+              <p className={`text-xs md:text-sm ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>Soins premium pour une belle naturelle</p>
             </div>
             <div className="text-center">
-              <h3 className={`font-semibold mb-3 text-sm md:text-base ${isDark ? 'text-gold-400' : 'text-gold-600'}`}>Contact</h3>
-              <p className={`text-xs md:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>contact@radiant.com</p>
+              <h3 className={`font-semibold mb-3 text-sm md:text-base ${isDark ? 'text-gold-400' : 'text-gold-700'}`}>Contact</h3>
+              <p className={`text-xs md:text-sm ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>contact@radiant.com</p>
             </div>
             <div className="text-center md:text-right">
-              <h3 className={`font-semibold mb-3 text-sm md:text-base ${isDark ? 'text-gold-400' : 'text-gold-600'}`}>Suivez-nous</h3>
-              <p className={`text-xs md:text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>@radiant_skincare</p>
+              <h3 className={`font-semibold mb-3 text-sm md:text-base ${isDark ? 'text-gold-400' : 'text-gold-700'}`}>Suivez-nous</h3>
+              <p className={`text-xs md:text-sm ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>@radiant_skincare</p>
             </div>
           </div>
-          <div className={`border-t pt-8 text-center ${isDark ? 'border-gold-500/20' : 'border-gold-300'}`}>
+          <div className={`border-t pt-8 text-center ${isDark ? 'border-gold-500/30' : 'border-gold-200'}`}>
             <p className={`text-xs md:text-sm uppercase tracking-widest ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>
               &copy; 2026 Radiant Skincare &middot; Tous droits réservés
             </p>

@@ -2,9 +2,11 @@ import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api';
 import { AuthContext } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Login = () => {
   const { setUser } = useContext(AuthContext);
+  const { isDark } = useTheme();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -35,82 +37,75 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 to-slate-900 flex items-center justify-center px-4 py-12">
+    <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-slate-950 to-slate-900' : 'bg-gradient-to-br from-gray-50 to-white'} flex items-center justify-center px-4 py-12`}>
       <div className="w-full max-w-md">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-serif text-white mb-2 tracking-wider">Radiant</h1>
+          <h1 className={`text-4xl font-serif mb-2 tracking-wider ${isDark ? 'text-white' : 'text-gray-950'}`}>Radiant</h1>
           <div className="flex justify-center gap-2 mb-8">
             <div className="w-8 h-px bg-gold-500"></div>
             <div className="w-2 h-px bg-rose-500"></div>
             <div className="w-8 h-px bg-gold-500"></div>
           </div>
-          <h2 className="text-2xl font-serif text-white mb-2">Connexion</h2>
-          <p className="text-gray-400">Accédez à votre compte Radiant</p>
+          <h2 className={`text-2xl font-serif mb-2 ${isDark ? 'text-white' : 'text-gray-950'}`}>Connexion</h2>
+          <p className={isDark ? 'text-gray-400' : 'text-gray-700'}>Accédez à votre compte Radiant</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <div className="bg-rose-500/20 border border-rose-500/50 text-rose-300 px-4 py-3 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
+        {error && (
+          <div className={`mb-6 p-4 rounded-lg ${isDark ? 'bg-red-900/30 border border-red-500/50 text-red-200' : 'bg-red-100 border border-red-300 text-red-800'}`}>
+            {error}
+          </div>
+        )}
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">Email</label>
+        <form onSubmit={handleSubmit} className={`${isDark ? 'bg-slate-800' : 'bg-white'} rounded-xl p-8 border ${isDark ? 'border-gold-500/20' : 'border-gold-200'}`}>
+          <div className="mb-6">
+            <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-950'}`}>
+              Email
+            </label>
             <input
               type="email"
-              placeholder="votre@email.com"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 bg-slate-800/50 border border-gold-500/30 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-500/20 transition"
               required
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition ${isDark ? 'bg-slate-700 border-gold-500/30 text-white placeholder-gray-400 focus:border-gold-400' : 'bg-gray-50 border-gold-300 text-gray-950 placeholder-gray-500 focus:border-gold-600'}`}
+              placeholder="votre@email.com"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">Mot de passe</label>
+          <div className="mb-8">
+            <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-950'}`}>
+              Mot de passe
+            </label>
             <input
               type="password"
-              placeholder="••••••••"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-3 bg-slate-800/50 border border-gold-500/30 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-500/20 transition"
               required
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition ${isDark ? 'bg-slate-700 border-gold-500/30 text-white placeholder-gray-400 focus:border-gold-400' : 'bg-gray-50 border-gold-300 text-gray-950 placeholder-gray-500 focus:border-gold-600'}`}
+              placeholder="••••••••"
             />
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-gold-500 to-rose-500 text-white py-3 font-bold rounded-lg hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
+            className={`w-full py-3 px-4 rounded-lg font-semibold uppercase tracking-widest transition ${isDark ? 'bg-gold-500 hover:bg-gold-600 text-white disabled:opacity-50' : 'bg-gold-600 hover:bg-gold-700 text-white disabled:opacity-50'}`}
           >
-            {isLoading ? 'Connexion en cours...' : 'Entrer dans l\'univers'}
+            {isLoading ? 'Connexion...' : 'Se connecter'}
           </button>
         </form>
 
-        <div className="mt-8 text-center">
-          <p className="text-gray-400 text-sm mb-4">
-            Pas encore de compte ?
-          </p>
-          <Link
-            to="/register"
-            className="text-gold-400 hover:text-gold-300 font-semibold transition"
-          >
-            Créer un compte
+        <p className={`text-center mt-6 ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+          Vous n'avez pas de compte ?{' '}
+          <Link to="/register" className={`font-semibold ${isDark ? 'text-gold-400 hover:text-gold-300' : 'text-gold-700 hover:text-gold-800'} transition`}>
+            S'inscrire
           </Link>
-        </div>
+        </p>
 
-        <div className="mt-8 text-center">
-          <Link
-            to="/shop"
-            className="text-gray-400 hover:text-gray-300 text-sm transition inline-flex items-center gap-2"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Continuer vos achats
+        <p className={`text-center mt-4 ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
+          <Link to="/shop" className={`font-semibold ${isDark ? 'text-gold-400 hover:text-gold-300' : 'text-gold-700 hover:text-gold-800'} transition`}>
+            Continuer vers la boutique
           </Link>
-        </div>
+        </p>
       </div>
     </div>
   );
