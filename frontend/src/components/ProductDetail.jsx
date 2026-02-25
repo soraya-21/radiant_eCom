@@ -47,7 +47,7 @@ const ProductDetail = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* IMAGE */}
-          <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-6 md:p-8 rounded-xl border border-gold-500/20 sticky top-24">
+          <div className="bg-slate-800 p-6 md:p-8 rounded-xl border-2 border-gold-500 sticky top-24">
             <img
               src={product.image ? (product.image.startsWith('https') ? product.image : `${mediaBase}${product.image}`) : ''}
               alt={product.name}
@@ -87,7 +87,7 @@ const ProductDetail = () => {
               <p className="text-rose-400 font-semibold text-sm">Économisez 10€ sur ce produit</p>
             </div>
 
-            <div className="border-t border-b border-gold-500/20 py-6 space-y-3">
+            <div className="border-t-2 border-b-2 border-gold-500 py-6 space-y-3">
               <h3 className="text-white font-semibold mb-4">Description</h3>
               <p className="text-gray-300 leading-relaxed">
                 {product.description || "Une création olfactive unique, mêlant notes rares et élégance intemporelle. Conçu pour sublimer votre beauté naturelle avec des ingrédients premium sélectionnés avec soin."}
@@ -117,7 +117,7 @@ const ProductDetail = () => {
 
             <button
               onClick={() => addToCart(product)}
-              className="w-full bg-gradient-to-r from-gold-500 to-rose-500 text-white py-4 md:py-5 font-bold text-lg rounded-lg hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest"
+              className="w-full bg-gradient-to-r from-gold-500 to-rose-500 text-white py-4 md:py-5 font-bold text-lg rounded-lg hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest border-2 border-gold-400"
             >
               Ajouter au panier
             </button>

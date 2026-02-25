@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
 
 const mediaBase = import.meta.env.VITE_API_MEDIA_URL || 'localhost:5431';
@@ -8,6 +8,7 @@ const mediaBase = import.meta.env.VITE_API_MEDIA_URL || 'localhost:5431';
 const Cart = () => {
   const { cartItems, addToCart, removeFromCart, clearCart, getCartCount } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
+  const navigate = useNavigate();
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -39,6 +40,18 @@ const Cart = () => {
     }
   };
 
+  // Vérifier si paiement réussi (paramètre success dans l'URL)
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success') === 'true') {
+      clearCart();
+      // Redirection vers dashboard après 2 secondes
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
+    }
+  }, [navigate, clearCart]);
+
   if (cartItems.length === 0) {
     return (
       <div className="bg-gradient-to-b from-slate-950 to-slate-900 min-h-screen flex items-center justify-center px-4">
@@ -48,7 +61,7 @@ const Cart = () => {
           <p className="text-gray-400 mb-8">Découvrez notre collection et trouvez vos produits préférés</p>
           <Link 
             to="/shop" 
-            className="inline-block bg-gradient-to-r from-gold-500 to-rose-500 text-white px-8 py-4 rounded-lg font-bold hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest"
+            className="inline-block bg-gradient-to-r from-gold-500 to-rose-500 text-white px-8 py-4 rounded-lg font-bold hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest border-2 border-gold-400"
           >
             Continuer vos achats
           </Link>
@@ -72,7 +85,7 @@ const Cart = () => {
               {cartItems.map((item) => (
                 <div 
                   key={item.id} 
-                  className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 bg-slate-800/50 backdrop-blur border border-gold-500/20 p-4 sm:p-6 rounded-xl hover:border-gold-400/50 transition"
+                  className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 bg-slate-800 border-2 border-gold-500 p-4 sm:p-6 rounded-xl hover:border-gold-400 transition"
                 >
                   {/* PRODUCT IMAGE */}
                   <div className="w-full sm:w-24 flex-shrink-0">
@@ -89,17 +102,17 @@ const Cart = () => {
                     <p className="text-gold-400 text-sm md:text-base font-semibold mb-3 md:mb-4">{item.price} €</p>
 
                     {/* QUANTITY SELECTOR */}
-                    <div className="flex items-center gap-2 bg-slate-900/50 border border-gold-500/20 rounded-lg w-fit p-1">
+                    <div className="flex items-center gap-2 bg-slate-900 border-2 border-gold-500 rounded-lg w-fit p-1">
                       <button 
                         onClick={() => removeFromCart(item.id)} 
-                        className="px-3 py-2 text-gray-400 hover:text-gold-400 transition font-bold"
+                        className="px-3 py-2 text-gold-400 hover:text-gold-300 transition font-bold"
                       >
                         −
                       </button>
                       <span className="px-4 py-2 font-bold text-white">{item.quantity}</span>
                       <button 
                         onClick={() => addToCart(item)} 
-                        className="px-3 py-2 text-gray-400 hover:text-gold-400 transition font-bold"
+                        className="px-3 py-2 text-gold-400 hover:text-gold-300 transition font-bold"
                       >
                         +
                       </button>
@@ -124,7 +137,7 @@ const Cart = () => {
 
             <button
               onClick={clearCart}
-              className="mt-8 w-full sm:w-auto text-gray-400 hover:text-gray-300 text-sm font-semibold transition border-t border-gold-500/20 pt-6"
+              className="mt-8 w-full sm:w-auto text-gray-400 hover:text-gray-300 text-sm font-semibold transition border-t border-gold-500 pt-6"
             >
               Vider le panier
             </button>
@@ -132,7 +145,7 @@ const Cart = () => {
 
           {/* SUMMARY */}
           <div className="lg:col-span-1">
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur border border-gold-500/20 p-6 md:p-8 rounded-xl sticky top-24 space-y-6">
+            <div className="bg-slate-800 border-2 border-gold-500 p-6 md:p-8 rounded-xl sticky top-24 space-y-6">
               <h2 className="text-2xl font-serif text-white">Résumé</h2>
 
               <div className="space-y-3 text-sm">
@@ -150,7 +163,7 @@ const Cart = () => {
                 </div>
               </div>
 
-              <div className="border-t border-gold-500/20 pt-6">
+              <div className="border-t border-gold-500 pt-6">
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-lg text-white font-semibold">Total TTC</span>
                   <span className="text-3xl md:text-2xl font-bold bg-gradient-to-r from-gold-400 to-rose-400 bg-clip-text text-transparent">
@@ -161,7 +174,7 @@ const Cart = () => {
                 <button
                   onClick={handleCheckout}
                   disabled={isProcessing}
-                  className={`w-full bg-gradient-to-r from-gold-500 to-rose-500 text-white py-4 font-bold text-lg rounded-lg hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest ${
+                  className={`w-full bg-gradient-to-r from-gold-500 to-rose-500 text-white py-4 font-bold text-lg rounded-lg hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest border-2 border-gold-400 ${
                     isProcessing ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                 >

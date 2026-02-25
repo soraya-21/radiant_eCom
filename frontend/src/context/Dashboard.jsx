@@ -45,13 +45,13 @@ const Dashboard = () => {
         </div>
 
         {orders.length === 0 ? (
-          <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur border border-gold-500/20 p-8 md:p-12 rounded-xl text-center">
+          <div className="bg-slate-800 border-2 border-gold-500 p-8 md:p-12 rounded-xl text-center">
             <div className="text-5xl mb-4">📦</div>
             <h2 className="text-2xl font-serif text-white mb-3">Aucune commande</h2>
             <p className="text-gray-400 mb-8">Vous n'avez pas encore passé de commande sur Radiant.</p>
             <Link
               to="/shop"
-              className="inline-block bg-gradient-to-r from-gold-500 to-rose-500 text-white px-8 py-3 rounded-lg font-bold hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest text-sm"
+              className="inline-block bg-gradient-to-r from-gold-500 to-rose-500 text-white px-8 py-3 rounded-lg font-bold hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest text-sm border-2 border-gold-400"
             >
               Découvrir la collection
             </Link>
@@ -61,10 +61,10 @@ const Dashboard = () => {
             {orders.map((order) => (
               <div
                 key={order.id}
-                className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur border border-gold-500/20 rounded-xl p-6 md:p-8 hover:border-gold-400/50 transition"
+                className="bg-slate-800 border-2 border-gold-500 rounded-xl p-6 md:p-8 hover:border-gold-400 transition"
               >
                 {/* HEADER */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6 pb-6 border-b border-gold-500/20">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6 pb-6 border-b-2 border-gold-500">
                   <div>
                     <p className="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-2">
                       Numéro de commande
@@ -115,9 +115,9 @@ const Dashboard = () => {
                   </p>
                   <div className="space-y-3">
                     {order.items && order.items.map((item) => (
-                      <div key={item.id} className="flex items-center justify-between p-3 bg-slate-800/30 rounded-lg">
+                      <div key={item.id} className="flex items-center justify-between p-3 bg-slate-700 border border-gold-500/50 rounded-lg">
                         <div className="flex items-center gap-4 flex-grow">
-                          <span className="bg-gold-500/20 border border-gold-500/50 text-gold-400 px-3 py-1 rounded font-bold text-sm">
+                          <span className="bg-gold-500/30 border border-gold-500 text-gold-400 px-3 py-1 rounded font-bold text-sm">
                             ×{item.quantity}
                           </span>
                           <span className="text-white font-medium">{item.product_name}</span>

@@ -1,6 +1,8 @@
 # Changelog - Radiant Skincare App
 
-
+## [2.2.0] - 2026-02-25
+### Fix : Amelioration de l'ui 
+- Landing page et code couleur "luxueux"
 
 ## [2.1.0] - 2026-02-25
 ### Feat Sentry integration for logs
