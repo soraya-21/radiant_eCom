@@ -1,5 +1,10 @@
 # Changelog - Radiant Skincare App
 
+
+
+## [2.1.0] - 2026-02-25
+### Feat Sentry integration for logs
+
 ## [2.0.0] - 2026-02-24
 ### Feat : Added import-export (data) via django admin
 - modification in products.admin
