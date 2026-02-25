@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../api';
 
 const Dashboard = () => {
@@ -22,65 +23,116 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-600"></div>
-        <p className="ml-4 text-gray-600">Chargement de vos commandes Radiant...</p>
+      <div className="bg-gradient-to-b from-slate-950 to-slate-900 min-h-screen flex items-center justify-center px-4">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gold-500"></div>
+          <p className="text-gray-400 italic">Chargement de vos commandes Radiant...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-serif mb-8 text-gray-800">Mes commandes</h1>
-      
-      <div className="grid grid-cols-1 gap-8">
-        <section>
-          <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-            📦 Historique des commandes
-          </h2>
-          
-          {orders.length === 0 ? (
-            <div className="bg-white p-8 rounded-2xl border border-dashed border-gray-300 text-center text-gray-500">
-              Vous n'avez pas encore passé de commande sur Radiant.
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {orders.map((order) => (
-                <div key={order.id} className="bg-white shadow-sm rounded-2xl p-6 border border-gray-100 hover:shadow-md transition">
-                  <div className="flex justify-between items-start border-b border-gray-50 pb-4 mb-4">
-                    <div>
-                      <p className="text-xs uppercase tracking-wider text-gray-400 font-bold">Commande</p>
-                      <p className="text-lg font-mono font-bold text-gray-700">#RDN-{order.id}</p>
-                      <p className="text-sm text-gray-500">Passée le {new Date(order.created_at).toLocaleDateString()}</p>
-                    </div>
-                    <div className="text-right">
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${
-                        order.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
-                      }`}>
-                        {order.status === 'paid' ? 'PAYÉE' : 'EN ATTENTE'}
-                      </span>
-                      <p className="text-2xl font-bold text-gray-900 mt-2">{order.total_amount} €</p>
-                    </div>
+    <div className="bg-gradient-to-b from-slate-950 to-slate-900 min-h-screen py-12 md:py-16 px-4">
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-12">
+          <h1 className="text-4xl md:text-5xl font-serif text-white mb-2">
+            Mes Commandes
+          </h1>
+          <p className="text-gold-400 text-sm uppercase tracking-widest font-semibold">
+            Historique de vos achats sur Radiant
+          </p>
+        </div>
+
+        {orders.length === 0 ? (
+          <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur border border-gold-500/20 p-8 md:p-12 rounded-xl text-center">
+            <div className="text-5xl mb-4">📦</div>
+            <h2 className="text-2xl font-serif text-white mb-3">Aucune commande</h2>
+            <p className="text-gray-400 mb-8">Vous n'avez pas encore passé de commande sur Radiant.</p>
+            <Link
+              to="/shop"
+              className="inline-block bg-gradient-to-r from-gold-500 to-rose-500 text-white px-8 py-3 rounded-lg font-bold hover:shadow-2xl hover:shadow-gold-500/50 transition transform hover:scale-105 uppercase tracking-widest text-sm"
+            >
+              Découvrir la collection
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {orders.map((order) => (
+              <div
+                key={order.id}
+                className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur border border-gold-500/20 rounded-xl p-6 md:p-8 hover:border-gold-400/50 transition"
+              >
+                {/* HEADER */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6 pb-6 border-b border-gold-500/20">
+                  <div>
+                    <p className="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-2">
+                      Numéro de commande
+                    </p>
+                    <p className="text-xl md:text-2xl font-mono font-bold text-white">
+                      #RDN-{order.id}
+                    </p>
+                    <p className="text-sm text-gray-400 mt-2">
+                      {new Date(order.created_at).toLocaleDateString('fr-FR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </p>
                   </div>
 
-                  {/* DÉTAILS DES ARTICLES */}
-                  <div className="space-y-4">
-                    <p className="text-xs font-bold text-gray-400 uppercase">Articles</p>
+                  <div className="text-left sm:text-right">
+                    <p className="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-2">
+                      Statut
+                    </p>
+                    <div className="flex items-center justify-start sm:justify-end gap-3 mb-3">
+                      {order.status === 'paid' ? (
+                        <>
+                          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                          <span className="text-green-400 font-bold uppercase tracking-widest text-sm">
+                            Payée
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <div className="w-3 h-3 rounded-full bg-orange-500 animate-pulse"></div>
+                          <span className="text-orange-400 font-bold uppercase tracking-widest text-sm">
+                            En attente
+                          </span>
+                        </>
+                      )}
+                    </div>
+                    <p className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gold-400 to-rose-400 bg-clip-text text-transparent">
+                      {order.total_amount.toFixed(2)} €
+                    </p>
+                  </div>
+                </div>
+
+                {/* ITEMS */}
+                <div>
+                  <p className="text-xs uppercase tracking-widest text-gray-400 font-semibold mb-4">
+                    Articles commandés
+                  </p>
+                  <div className="space-y-3">
                     {order.items && order.items.map((item) => (
-                      <div key={item.id} className="flex justify-between items-center text-sm">
-                        <div className="flex items-center gap-3">
-                          <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-bold">x{item.quantity}</span>
-                          <span className="text-gray-700 font-medium">{item.product_name}</span>
+                      <div key={item.id} className="flex items-center justify-between p-3 bg-slate-800/30 rounded-lg">
+                        <div className="flex items-center gap-4 flex-grow">
+                          <span className="bg-gold-500/20 border border-gold-500/50 text-gold-400 px-3 py-1 rounded font-bold text-sm">
+                            ×{item.quantity}
+                          </span>
+                          <span className="text-white font-medium">{item.product_name}</span>
                         </div>
-                        <span className="text-gray-900 font-bold">{(item.price * item.quantity).toFixed(2)} €</span>
+                        <span className="text-gold-400 font-bold text-sm md:text-base">
+                          {(item.price * item.quantity).toFixed(2)} €
+                        </span>
                       </div>
                     ))}
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </section>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
