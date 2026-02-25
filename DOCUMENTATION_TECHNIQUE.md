@@ -308,12 +308,10 @@ class OrderItem(models.Model):
 ### Documentation interactive
 
 **Accès direct au Swagger (Production):**
-- **Swagger UI** : https://radiant-ecom-backend.onrender.com/api/schema/swagger-ui/
 - **ReDoc** : https://radiant-ecom-backend.onrender.com/api/schema/redoc/
 - **Schema OpenAPI (JSON)** : https://radiant-ecom-backend.onrender.com/api/schema/
 
 **En local (développement):**
-- **Swagger UI** : `http://localhost:8000/api/schema/swagger-ui/`
 - **ReDoc** : `http://localhost:8000/api/schema/redoc/`
 - **Schema OpenAPI** : `http://localhost:8000/api/schema/`
 
@@ -360,7 +358,6 @@ Request:
   "username": "marie_dupont",
   "email": "marie@radiant.com",
   "password": "SecurePass123!",
-  "password2": "SecurePass123!"
 }
 ```
 
