@@ -5,7 +5,11 @@ import { useTheme } from '../context/ThemeContext';
 
 const Register = () => {
   const { isDark } = useTheme();
-  const [formData, setFormData] = useState({ first_name: '', email: '', password: '' });
+  const [formData, setFormData] = useState({
+    first_name: '',
+    email: '',
+    password: ''
+  });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -22,23 +26,34 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      await api.post('accounts/register/', {
+      const response = await api.post('accounts/register/', {
         first_name: formData.first_name,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        username: formData.email
       });
 
-      navigate('/login');
+      if (response.status === 201) {
+        navigate('/login', {
+          state: { message: 'Compte créé avec succès ! Connectez-vous.' }
+        });
+      }
     } catch (err) {
-      console.error("Erreur inscription:", err.response?.data);
-      setError(err.response?.data?.email?.[0] || "Erreur lors de l'inscription");
+      console.error("Erreur inscription:", err);
+      if (err.response?.data) {
+        const errors = err.response.data;
+        const errorMsg = errors.email?.[0] || errors.password?.[0] || errors.username?.[0] || errors.detail || "Erreur lors de l'inscription";
+        setError(errorMsg);
+      } else {
+        setError("Erreur de connexion au serveur");
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-slate-950 to-slate-900' : 'bg-gradient-to-br from-gray-50 to-white'} flex items-center justify-center px-4 py-12`}>
+    <div className={`min-h-screen flex items-center justify-center px-4 py-12 ${isDark ? 'bg-gradient-to-br from-slate-950 to-slate-900' : 'bg-gradient-to-br from-gray-50 to-white'}`}>
       <div className="w-full max-w-md">
         <div className="text-center mb-12">
           <h1 className={`text-4xl font-serif mb-2 tracking-wider ${isDark ? 'text-white' : 'text-gray-950'}`}>Radiant</h1>
@@ -52,12 +67,12 @@ const Register = () => {
         </div>
 
         {error && (
-          <div className={`mb-6 p-4 rounded-lg ${isDark ? 'bg-red-900/30 border border-red-500/50 text-red-200' : 'bg-red-100 border border-red-300 text-red-800'}`}>
+          <div className={`mb-6 p-4 rounded-lg text-sm ${isDark ? 'bg-red-900/30 border border-red-500/50 text-red-200' : 'bg-red-100 border border-red-300 text-red-800'}`}>
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className={`${isDark ? 'bg-slate-800' : 'bg-white'} rounded-xl p-8 border ${isDark ? 'border-gold-500/20' : 'border-gold-200'}`}>
+        <form onSubmit={handleSubmit} className={`${isDark ? 'bg-slate-800 border-gold-500/20' : 'bg-white border-gold-200'} rounded-xl p-8 border`}>
           <div className="mb-6">
             <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-950'}`}>
               Nom
@@ -66,7 +81,7 @@ const Register = () => {
               type="text"
               required
               value={formData.first_name}
-              onChange={(e) => setFormData({...formData, first_name: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
               className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition ${isDark ? 'bg-slate-700 border-gold-500/30 text-white placeholder-gray-400 focus:border-gold-400' : 'bg-gray-50 border-gold-300 text-gray-950 placeholder-gray-500 focus:border-gold-600'}`}
               placeholder="Jean Dupont"
             />
@@ -80,7 +95,7 @@ const Register = () => {
               type="email"
               required
               value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition ${isDark ? 'bg-slate-700 border-gold-500/30 text-white placeholder-gray-400 focus:border-gold-400' : 'bg-gray-50 border-gold-300 text-gray-950 placeholder-gray-500 focus:border-gold-600'}`}
               placeholder="votre@email.com"
             />
@@ -94,7 +109,7 @@ const Register = () => {
               type="password"
               required
               value={formData.password}
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition ${isDark ? 'bg-slate-700 border-gold-500/30 text-white placeholder-gray-400 focus:border-gold-400' : 'bg-gray-50 border-gold-300 text-gray-950 placeholder-gray-500 focus:border-gold-600'}`}
               placeholder="Minimum 8 caractères"
             />

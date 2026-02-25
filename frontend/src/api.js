@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const api = axios.create({
-  // On récupère l'URL depuis les variables d'environnement
   baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
