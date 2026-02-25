@@ -29,7 +29,6 @@
 |---------|-----|
 | **Frontend** | https://radiant-ecom.netlify.app |
 | **Backend API** | https://radiant-ecom-backend.onrender.com |
-| **Swagger/API Docs** | https://radiant-ecom-backend.onrender.com/api/schema/swagger-ui/ |
 | **ReDoc** | https://radiant-ecom-backend.onrender.com/api/schema/redoc/ |
 | **OpenAPI Schema** | https://radiant-ecom-backend.onrender.com/api/schema/ |
 
@@ -193,7 +192,7 @@ npm run dev
 - Frontend: http://localhost:5173
 - Backend: http://localhost:8000/api
 - Admin: http://localhost:8000/admin
-- Swagger: http://localhost:8000/api/schema/swagger-ui/
+- Swagger: http://localhost:8000/api/schema/ 
 
 ---
 
@@ -266,7 +265,7 @@ Code style: PEP-8 (backend), ESLint (frontend)
 
 ## Ressources
 
-- [Swagger Live](https://radiant-ecom-backend.onrender.com/api/schema/swagger-ui/)
+- [Swagger Live](https://radiant-ecom-backend.onrender.com/api/schema/ )
 - [Documentation Complète](./DOCUMENTATION_TECHNIQUE.md)
 - [Changelog](./CHANGELOG.md)
 - [Django Docs](https://docs.djangoproject.com/)
