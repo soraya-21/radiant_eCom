@@ -69,7 +69,7 @@ const Shop = () => {
                   </h3>
                   <p className="text-xs md:text-sm text-gold-400 italic mb-3">{product.category}</p>
                 </div>
-                <p className="text-xl md:text-2xl font-bold bg-gradient-to-r from-gold-400 to-rose-400 bg-clip-text text-transparent mb-6">
+                <p className="text-xl md:text-2xl font-bold text-gold-400 mb-6">
                   {product.price} €
                 </p>
               </div>
@@ -99,6 +99,7 @@ function App() {
   const { getCartCount } = useCart();
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className={`min-h-screen font-sans text-gray-900 ${isHome ? 'bg-slate-950' : 'bg-slate-950'}`}>
@@ -112,10 +113,11 @@ function App() {
             Radiant
           </Link>
 
-          <div className="flex items-center gap-4 md:gap-8 text-xs md:text-sm uppercase tracking-widest font-semibold text-white">
+          {/* DESKTOP MENU */}
+          <div className="hidden md:flex items-center gap-4 md:gap-8 text-xs md:text-sm uppercase tracking-widest font-semibold text-white">
             <Link 
               to="/shop" 
-              className="hover:text-gold-400 transition hidden md:block"
+              className="hover:text-gold-400 transition"
             >
               Boutique
             </Link>
@@ -136,7 +138,7 @@ function App() {
               <div className="flex items-center gap-4 md:gap-6">
                 <Link 
                   to="/dashboard" 
-                  className="hover:text-gold-400 transition hidden md:block"
+                  className="hover:text-gold-400 transition"
                 >
                   Commandes
                 </Link>
@@ -164,7 +166,83 @@ function App() {
               </div>
             )}
           </div>
+
+          {/* MOBILE MENU BUTTON */}
+          <div className="md:hidden flex items-center gap-4">
+            {/* CART ICON MOBILE */}
+            <Link to="/cart" className="relative group p-2 hover:text-gold-400 transition text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+              </svg>
+              {getCartCount() > 0 && (
+                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-gold-500 to-rose-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-pulse">
+                  {getCartCount()}
+                </span>
+              )}
+            </Link>
+
+            {/* HAMBURGER BUTTON */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-white hover:text-gold-400 transition p-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </button>
+          </div>
         </div>
+
+        {/* MOBILE MENU */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-slate-800 border-t border-gold-500/20 p-4 space-y-4">
+            <Link 
+              to="/shop"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-gold-400 hover:text-gold-300 font-semibold uppercase tracking-widest py-2"
+            >
+              Boutique
+            </Link>
+            
+            {user ? (
+              <>
+                <Link 
+                  to="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-gold-400 hover:text-gold-300 font-semibold uppercase tracking-widest py-2 border-b border-gold-500/20"
+                >
+                  Mes Commandes
+                </Link>
+                <button
+                  onClick={() => {
+                    logout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full text-left text-rose-400 hover:text-rose-300 font-semibold uppercase tracking-widest py-2"
+                >
+                  Déconnexion
+                </button>
+              </>
+            ) : (
+              <>
+                <Link 
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-gold-400 hover:text-gold-300 font-semibold uppercase tracking-widest py-2"
+                >
+                  Connexion
+                </Link>
+                <Link 
+                  to="/register"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-gold-400 hover:text-gold-300 font-semibold uppercase tracking-widest py-2 border-t border-gold-500/20 pt-4"
+                >
+                  S'inscrire
+                </Link>
+              </>
+            )}
+          </div>
+        )}
       </nav>
 
       <main className="min-h-[calc(100vh-200px)]">

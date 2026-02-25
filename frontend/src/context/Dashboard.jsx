@@ -5,14 +5,21 @@ import api from '../api';
 const Dashboard = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const res = await api.get('orders/my-orders/');
-        setOrders(res.data);
+        // Assurer que les données sont valides
+        if (Array.isArray(res.data)) {
+          setOrders(res.data);
+        } else {
+          setOrders([]);
+        }
       } catch (err) {
         console.error("Erreur lors de la récupération des commandes:", err);
+        setError("Impossible de charger vos commandes");
       } finally {
         setLoading(false);
       }
@@ -27,6 +34,17 @@ const Dashboard = () => {
         <div className="flex flex-col items-center gap-4">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gold-500"></div>
           <p className="text-gray-400 italic">Chargement de vos commandes Radiant...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-gradient-to-b from-slate-950 to-slate-900 min-h-screen flex items-center justify-center px-4">
+        <div className="text-center">
+          <p className="text-rose-400 font-semibold mb-4">{error}</p>
+          <Link to="/shop" className="text-gold-400 hover:text-gold-300">← Retour à la boutique</Link>
         </div>
       </div>
     );
@@ -58,79 +76,86 @@ const Dashboard = () => {
           </div>
         ) : (
           <div className="space-y-6">
-            {orders.map((order) => (
-              <div
-                key={order.id}
-                className="bg-slate-800 border-2 border-gold-500 rounded-xl p-6 md:p-8 hover:border-gold-400 transition"
-              >
-                {/* HEADER */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6 pb-6 border-b-2 border-gold-500">
-                  <div>
-                    <p className="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-2">
-                      Numéro de commande
-                    </p>
-                    <p className="text-xl md:text-2xl font-mono font-bold text-white">
-                      #RDN-{order.id}
-                    </p>
-                    <p className="text-sm text-gray-400 mt-2">
-                      {new Date(order.created_at).toLocaleDateString('fr-FR', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </p>
-                  </div>
+            {orders.map((order) => {
+              // Convertir total_amount en nombre si nécessaire
+              const totalAmount = typeof order.total_amount === 'string' 
+                ? parseFloat(order.total_amount) 
+                : order.total_amount;
 
-                  <div className="text-left sm:text-right">
-                    <p className="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-2">
-                      Statut
-                    </p>
-                    <div className="flex items-center justify-start sm:justify-end gap-3 mb-3">
-                      {order.status === 'paid' ? (
-                        <>
-                          <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                          <span className="text-green-400 font-bold uppercase tracking-widest text-sm">
-                            Payée
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <div className="w-3 h-3 rounded-full bg-orange-500 animate-pulse"></div>
-                          <span className="text-orange-400 font-bold uppercase tracking-widest text-sm">
-                            En attente
-                          </span>
-                        </>
-                      )}
+              return (
+                <div
+                  key={order.id}
+                  className="bg-slate-800 border-2 border-gold-500 rounded-xl p-6 md:p-8 hover:border-gold-400 transition"
+                >
+                  {/* HEADER */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6 pb-6 border-b-2 border-gold-500">
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-2">
+                        Numéro de commande
+                      </p>
+                      <p className="text-xl md:text-2xl font-mono font-bold text-white">
+                        #RDN-{order.id}
+                      </p>
+                      <p className="text-sm text-gray-400 mt-2">
+                        {new Date(order.created_at).toLocaleDateString('fr-FR', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
                     </div>
-                    <p className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gold-400 to-rose-400 bg-clip-text text-transparent">
-                      {order.total_amount.toFixed(2)} €
-                    </p>
-                  </div>
-                </div>
 
-                {/* ITEMS */}
-                <div>
-                  <p className="text-xs uppercase tracking-widest text-gray-400 font-semibold mb-4">
-                    Articles commandés
-                  </p>
-                  <div className="space-y-3">
-                    {order.items && order.items.map((item) => (
-                      <div key={item.id} className="flex items-center justify-between p-3 bg-slate-700 border border-gold-500/50 rounded-lg">
-                        <div className="flex items-center gap-4 flex-grow">
-                          <span className="bg-gold-500/30 border border-gold-500 text-gold-400 px-3 py-1 rounded font-bold text-sm">
-                            ×{item.quantity}
-                          </span>
-                          <span className="text-white font-medium">{item.product_name}</span>
-                        </div>
-                        <span className="text-gold-400 font-bold text-sm md:text-base">
-                          {(item.price * item.quantity).toFixed(2)} €
-                        </span>
+                    <div className="text-left sm:text-right">
+                      <p className="text-xs uppercase tracking-widest text-gold-400 font-semibold mb-2">
+                        Statut
+                      </p>
+                      <div className="flex items-center justify-start sm:justify-end gap-3 mb-3">
+                        {order.status === 'paid' ? (
+                          <>
+                            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                            <span className="text-green-400 font-bold uppercase tracking-widest text-sm">
+                              Payée
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <div className="w-3 h-3 rounded-full bg-orange-500 animate-pulse"></div>
+                            <span className="text-orange-400 font-bold uppercase tracking-widest text-sm">
+                              En attente
+                            </span>
+                          </>
+                        )}
                       </div>
-                    ))}
+                      <p className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gold-400 to-rose-400 bg-clip-text text-transparent">
+                        {totalAmount ? totalAmount.toFixed(2) : '0.00'} €
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* ITEMS */}
+                  <div>
+                    <p className="text-xs uppercase tracking-widest text-gray-400 font-semibold mb-4">
+                      Articles commandés
+                    </p>
+                    <div className="space-y-3">
+                      {order.items && Array.isArray(order.items) && order.items.map((item) => (
+                        <div key={item.id} className="flex items-center justify-between p-3 bg-slate-700 border border-gold-500/50 rounded-lg">
+                          <div className="flex items-center gap-4 flex-grow">
+                            <span className="bg-gold-500/30 border border-gold-500 text-gold-400 px-3 py-1 rounded font-bold text-sm">
+                              ×{item.quantity || 1}
+                            </span>
+                            <span className="text-white font-medium">{item.product_name || 'Produit'}</span>
+                          </div>
+                          <span className="text-gold-400 font-bold text-sm md:text-base">
+                            {(parseFloat(item.price) * (item.quantity || 1)).toFixed(2)} €
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

@@ -79,7 +79,7 @@ const ProductDetail = () => {
 
             <div className="space-y-4">
               <div className="flex items-baseline gap-3">
-                <p className="text-5xl font-bold bg-gradient-to-r from-gold-400 to-rose-400 bg-clip-text text-transparent">
+                <p className="text-5xl font-bold text-gold-400">
                   {product.price} €
                 </p>
                 <span className="text-gray-500 text-lg line-through">{parseFloat(product.price) + 10} €</span>

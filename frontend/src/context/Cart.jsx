@@ -121,7 +121,7 @@ const Cart = () => {
 
                   {/* PRICE & REMOVE */}
                   <div className="flex flex-col items-end gap-4 w-full sm:w-auto">
-                    <p className="text-2xl sm:text-xl font-bold bg-gradient-to-r from-gold-400 to-rose-400 bg-clip-text text-transparent">
+                    <p className="text-2xl sm:text-xl font-bold text-gold-400">
                       {(item.price * item.quantity).toFixed(2)} €
                     </p>
                     <button
@@ -166,7 +166,7 @@ const Cart = () => {
               <div className="border-t border-gold-500 pt-6">
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-lg text-white font-semibold">Total TTC</span>
-                  <span className="text-3xl md:text-2xl font-bold bg-gradient-to-r from-gold-400 to-rose-400 bg-clip-text text-transparent">
+                  <span className="text-3xl md:text-2xl font-bold text-gold-400">
                     {(totalPrice * 1.2).toFixed(2)} €
                   </span>
                 </div>
