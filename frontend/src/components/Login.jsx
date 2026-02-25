@@ -37,7 +37,7 @@ const Login = () => {
   };
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gradient-to-br from-slate-950 to-slate-900' : 'bg-gradient-to-br from-gray-50 to-white'} flex items-center justify-center px-4 py-12`}>
+    <div className={`min-h-screen flex items-center justify-center px-4 py-12 ${isDark ? 'bg-gradient-to-br from-slate-950 to-slate-900' : 'bg-gradient-to-br from-gray-50 to-white'}`}>
       <div className="w-full max-w-md">
         <div className="text-center mb-12">
           <h1 className={`text-4xl font-serif mb-2 tracking-wider ${isDark ? 'text-white' : 'text-gray-950'}`}>Radiant</h1>
@@ -51,12 +51,12 @@ const Login = () => {
         </div>
 
         {error && (
-          <div className={`mb-6 p-4 rounded-lg ${isDark ? 'bg-red-900/30 border border-red-500/50 text-red-200' : 'bg-red-100 border border-red-300 text-red-800'}`}>
+          <div className={`mb-6 p-4 rounded-lg text-sm ${isDark ? 'bg-red-900/30 border border-red-500/50 text-red-200' : 'bg-red-100 border border-red-300 text-red-800'}`}>
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className={`${isDark ? 'bg-slate-800' : 'bg-white'} rounded-xl p-8 border ${isDark ? 'border-gold-500/20' : 'border-gold-200'}`}>
+        <form onSubmit={handleSubmit} className={`${isDark ? 'bg-slate-800 border-gold-500/20' : 'bg-white border-gold-200'} rounded-xl p-8 border`}>
           <div className="mb-6">
             <label className={`block text-sm font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-950'}`}>
               Email
@@ -65,7 +65,7 @@ const Login = () => {
               type="email"
               required
               value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition ${isDark ? 'bg-slate-700 border-gold-500/30 text-white placeholder-gray-400 focus:border-gold-400' : 'bg-gray-50 border-gold-300 text-gray-950 placeholder-gray-500 focus:border-gold-600'}`}
               placeholder="votre@email.com"
             />
@@ -79,7 +79,7 @@ const Login = () => {
               type="password"
               required
               value={formData.password}
-              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               className={`w-full px-4 py-3 rounded-lg border-2 focus:outline-none transition ${isDark ? 'bg-slate-700 border-gold-500/30 text-white placeholder-gray-400 focus:border-gold-400' : 'bg-gray-50 border-gold-300 text-gray-950 placeholder-gray-500 focus:border-gold-600'}`}
               placeholder="••••••••"
             />
@@ -90,20 +90,14 @@ const Login = () => {
             disabled={isLoading}
             className={`w-full py-3 px-4 rounded-lg font-semibold uppercase tracking-widest transition ${isDark ? 'bg-gold-500 hover:bg-gold-600 text-white disabled:opacity-50' : 'bg-gold-600 hover:bg-gold-700 text-white disabled:opacity-50'}`}
           >
-            {isLoading ? 'Connexion...' : 'Se connecter'}
+            {isLoading ? 'Connexion...' : 'Entrer dans l\'univers'}
           </button>
         </form>
 
         <p className={`text-center mt-6 ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
-          Vous n'avez pas de compte ?{' '}
+          Pas encore de compte ?{' '}
           <Link to="/register" className={`font-semibold ${isDark ? 'text-gold-400 hover:text-gold-300' : 'text-gold-700 hover:text-gold-800'} transition`}>
-            S'inscrire
-          </Link>
-        </p>
-
-        <p className={`text-center mt-4 ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>
-          <Link to="/shop" className={`font-semibold ${isDark ? 'text-gold-400 hover:text-gold-300' : 'text-gold-700 hover:text-gold-800'} transition`}>
-            Continuer vers la boutique
+            Créer un compte
           </Link>
         </p>
       </div>
