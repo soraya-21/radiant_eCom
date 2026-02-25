@@ -307,20 +307,26 @@ class OrderItem(models.Model):
 
 ### Documentation interactive
 
-- **Swagger UI** : `GET /api/docs/`
-- **ReDoc** : `GET /api/redoc/`
-- **Schema OpenAPI** : `GET /api/schema/`
+**Accès direct au Swagger (Production):**
+- **Swagger UI** : https://radiant-ecom-backend.onrender.com/api/schema/swagger-ui/
+- **ReDoc** : https://radiant-ecom-backend.onrender.com/api/schema/redoc/
+- **Schema OpenAPI (JSON)** : https://radiant-ecom-backend.onrender.com/api/schema/
+
+**En local (développement):**
+- **Swagger UI** : `http://localhost:8000/api/schema/swagger-ui/`
+- **ReDoc** : `http://localhost:8000/api/schema/redoc/`
+- **Schema OpenAPI** : `http://localhost:8000/api/schema/`
 
 ### Endpoints
 
-#### 🔐 Authentification
+#### Authentification
 
 | Méthode | Endpoint | Description | Auth |
 |---------|----------|-------------|------|
-| `POST` | `/api/auth/login/` | Obtenir tokens JWT | ❌ |
-| `POST` | `/api/auth/refresh/` | Rafraîchir token | ❌ |
+| `POST` | `/api/token/` | Obtenir tokens JWT | Non |
+| `POST` | `/api/token/refresh/` | Rafraichir token | Non |
 
-**POST `/api/auth/login/` - Login**
+**POST `/api/token/` - Login**
 
 Request:
 ```json
@@ -340,11 +346,11 @@ Response (200):
 
 ---
 
-#### 👥 Comptes utilisateurs
+#### Comptes utilisateurs
 
 | Méthode | Endpoint | Description | Auth |
 |---------|----------|-------------|------|
-| `POST` | `/api/accounts/register/` | Créer un compte | ❌ |
+| `POST` | `/api/accounts/register/` | Créer un compte | Non |
 
 **POST `/api/accounts/register/` - Inscription**
 
@@ -373,15 +379,15 @@ Response (201):
 
 ---
 
-#### 📦 Produits
+#### Produits
 
 | Méthode | Endpoint | Description | Auth |
 |---------|----------|-------------|------|
-| `GET` | `/api/products/` | Lister tous les produits | ❌ |
-| `GET` | `/api/products/{id}/` | Détail d'un produit | ❌ |
-| `POST` | `/api/products/` | Créer un produit | ✅ Admin |
-| `PUT` | `/api/products/{id}/` | Modifier un produit | ✅ Admin |
-| `DELETE` | `/api/products/{id}/` | Supprimer un produit | ✅ Admin |
+| `GET` | `/api/products/` | Lister tous les produits | Non |
+| `GET` | `/api/products/{id}/` | Détail d'un produit | Non |
+| `POST` | `/api/products/` | Créer un produit | Oui (Admin) |
+| `PUT` | `/api/products/{id}/` | Modifier un produit | Oui (Admin) |
+| `DELETE` | `/api/products/{id}/` | Supprimer un produit | Oui (Admin) |
 
 **GET `/api/products/` - Lister**
 
@@ -405,14 +411,14 @@ Response (200):
 
 ---
 
-#### 🛒 Commandes
+#### Commandes
 
 | Méthode | Endpoint | Description | Auth |
 |---------|----------|-------------|------|
-| `POST` | `/api/orders/create/` | Créer une commande | ✅ |
-| `GET` | `/api/orders/my-orders/` | Historique personnes | ✅ |
-| `POST` | `/api/orders/sync-cart/` | Synchroniser panier | ✅ |
-| `POST` | `/api/orders/webhook/` | Webhook Stripe | ❌ |
+| `POST` | `/api/orders/create/` | Créer une commande | Oui |
+| `GET` | `/api/orders/my-orders/` | Historique personnes | Oui |
+| `POST` | `/api/orders/sync-cart/` | Synchroniser panier | Oui |
+| `POST` | `/api/orders/webhook/` | Webhook Stripe | Signature |
 
 **POST `/api/orders/create/` - Créer commande**
 
