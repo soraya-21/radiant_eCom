@@ -27,7 +27,7 @@
 
 | Service | URL |
 |---------|-----|
-| **Frontend** | https://radiant-ecom.netlify.app |
+| **Frontend** | https://radiant-ecom-front.netlify.app/ |
 | **Backend API** | https://radiant-ecom-backend.onrender.com |
 | **ReDoc** | https://radiant-ecom-backend.onrender.com/api/schema/redoc/ |
 | **OpenAPI Schema** | https://radiant-ecom-backend.onrender.com/api/schema/ |
@@ -276,4 +276,5 @@ Code style: PEP-8 (backend), ESLint (frontend)
 
 **Version:** 1.0.0  
 **Statut:** Production  
+
 **Dernière mise à jour:** Février 2026
