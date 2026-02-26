@@ -29,7 +29,7 @@
 |---------|-----|
 | **Frontend** | https://radiant-ecom-front.netlify.app/ |
 | **Backend API** | https://radiant-ecom-backend.onrender.com |
-| **ReDoc** | https://radiant-ecom-backend.onrender.com/api/schema/redoc/ |
+| **ReDoc** | https://radiant-ecom-backend.onrender.com/api/redoc |
 | **OpenAPI Schema** | https://radiant-ecom-backend.onrender.com/api/schema/ |
 
 ### Comptes de Test
@@ -278,3 +278,4 @@ Code style: PEP-8 (backend), ESLint (frontend)
 **Statut:** Production  
 
 **Dernière mise à jour:** Février 2026
+
